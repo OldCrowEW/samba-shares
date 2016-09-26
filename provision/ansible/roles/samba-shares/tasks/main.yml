@@ -1,0 +1,28 @@
+---
+- name: Add our Dev Group
+  group: name={{ samba_group }} state=present
+
+- name: Add our Dev Users
+  user: name={{ item }} group={{ samba_group }}
+  with_items:
+    "{{ example_devs }}"
+
+- name: Install samba packages
+  yum: name={{ item }} state=present 
+  with_items:
+    "{{ samba_pkgs }}"
+
+- name: Make sure our Samba share exists - Create Fake Mount
+  file: path={{ samba_share }} owner={{ samba_admin }} group={{ samba_group }} mode=775 state=directory
+
+- name: Copy our Samba configuration in place
+  template: src=smb.conf.j2 dest=/etc/samba/smb.conf
+
+- name: Start Up Samba Party
+  service: name={{ item }} enabled=yes state=started
+  with_items:
+    "{{ samba_services }}"
+
+# Not needed since Vagrant box.
+#- name: Modify firewalld to allow external connections
+#  firewalld: service=samba permanent=true zone=public state=enabled

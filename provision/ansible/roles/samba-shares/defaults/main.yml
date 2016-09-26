@@ -1,0 +1,20 @@
+samba_users: "{{ samba_groups }}"
+samba_group: dev
+samba_admin: admin
+samba_services:
+  - smb
+  - nmb
+samba_share: "/mnt/share/samba"
+samba_pkgs:
+  - samba
+  - samba-client
+  - samba-common
+example_devs:
+- joe
+- bob
+- john
+- mary
+- suzy
+- laura
+- "{{ samba_admin }}"
+- "{{ ansible_ssh_user }}"

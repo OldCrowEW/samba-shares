@@ -1,0 +1,10 @@
+--- 
+- hosts: all
+  become: yes
+  roles:
+    - common
+
+- hosts: all
+  become: yes
+  roles:
+    - samba-shares
